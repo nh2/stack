@@ -34,6 +34,7 @@ import qualified    Codec.Archive.Tar as Tar
 import qualified    Codec.Archive.Tar.Check as Tar
 import qualified    Codec.Archive.Tar.Entry as Tar
 import              Codec.Compression.GZip (decompress)
+import              Control.Concurrent.STM (TVar, writeTVar, readTVar, atomically, newTVarIO, modifyTVar, readTVarIO)
 import              Stack.Prelude
 import              Crypto.Hash (SHA256 (..))
 import qualified    Data.ByteString as S
@@ -60,7 +61,7 @@ import              Stack.Types.PackageIndex
 import              Stack.Types.PackageName
 import              Stack.Types.Version
 import qualified    System.FilePath as FP
-import              System.IO (SeekMode (AbsoluteSeek))
+import              System.IO (SeekMode (AbsoluteSeek), hSeek)
 import              System.PosixCompat (setFileMode)
 
 data FetchException
@@ -499,14 +500,14 @@ fetchPackages' :: forall env. HasCabalLoader env
                -> RIO env (Map PackageIdentifier (Path Abs Dir))
 fetchPackages' mdistDir toFetchAll = do
     connCount <- view $ cabalLoaderL.to clConnectionCount
-    outputVar <- newTVarIO Map.empty
+    outputVar <- liftIO $ newTVarIO Map.empty
 
     parMapM_
         connCount
         (go outputVar)
         (Map.toList toFetchAll)
 
-    readTVarIO outputVar
+    liftIO $ readTVarIO outputVar
   where
     go :: TVar (Map PackageIdentifier (Path Abs Dir))
        -> (PackageIdentifier, ToFetch)

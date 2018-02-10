@@ -24,7 +24,7 @@ module Stack.Build.Execute
     ) where
 
 import           Control.Concurrent.Execute
-import           Control.Concurrent.STM (check)
+import           Control.Concurrent.STM
 import           Stack.Prelude
 import           Crypto.Hash
 import           Data.Attoparsec.Text hiding (try)
@@ -88,7 +88,7 @@ import qualified System.Directory as D
 import           System.Environment (getExecutablePath)
 import           System.Exit (ExitCode (..))
 import qualified System.FilePath as FP
-import           System.IO (hPutStr, stderr, stdout)
+import           System.IO (hPutStr, stderr, stdout, hClose)
 import           System.PosixCompat.Files (createLink)
 import           RIO.Process
 

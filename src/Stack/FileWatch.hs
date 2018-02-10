@@ -9,7 +9,7 @@ module Stack.FileWatch
 
 import Blaze.ByteString.Builder (toLazyByteString, copyByteString)
 import Blaze.ByteString.Builder.Char.Utf8 (fromShow)
-import Control.Concurrent.STM (check)
+import Control.Concurrent.STM
 import Stack.Prelude
 import qualified Data.ByteString.Lazy as L
 import qualified Data.Map.Strict as Map
@@ -18,7 +18,7 @@ import GHC.IO.Exception
 import Path
 import System.Console.ANSI
 import System.FSNotify
-import System.IO (stdout, stderr, hPutStrLn, getLine)
+import System.IO (stdout, stderr, hPutStrLn, getLine, hIsTerminalDevice)
 
 -- | Print an exception to stderr
 printExceptionStderr :: Exception e => e -> IO ()

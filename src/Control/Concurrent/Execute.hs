@@ -12,7 +12,7 @@ module Control.Concurrent.Execute
     , runActions
     ) where
 
-import           Control.Concurrent.STM   (retry)
+import           Control.Concurrent.STM
 import           Stack.Prelude
 import           Data.List (sortBy)
 import qualified Data.Set                 as Set

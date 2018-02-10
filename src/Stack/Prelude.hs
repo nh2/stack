@@ -18,6 +18,7 @@ import           Path                 as X (Abs, Dir, File, Path, Rel,
 import qualified Path.IO
 
 import qualified System.IO as IO
+import           System.IO as X (stdout, stderr, BufferMode(..), hSetBuffering, hGetBuffering, hFlush, hFileSize)
 import qualified System.Directory as Dir
 import qualified System.FilePath as FP
 import           System.IO.Error (isDoesNotExistError)
